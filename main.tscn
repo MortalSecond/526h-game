@@ -1,22 +1,69 @@
 [gd_scene format=3 uid="uid://dh6adpdimsmtx"]
 
+[ext_resource type="Script" uid="uid://badh8j38nok16" path="res://game_state.gd" id="1_0xm2m"]
 [ext_resource type="PackedScene" uid="uid://bhiexaw0mtji4" path="res://player.tscn" id="1_ig7tw"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_0xm2m"]
 size = Vector2(295, 37)
 
 [node name="Node2D" type="Node2D" unique_id=921852018]
+script = ExtResource("1_0xm2m")
 
-[node name="StaticBody2D" type="StaticBody2D" parent="." unique_id=1597371284]
+[node name="ParallaxBackground" type="ParallaxBackground" parent="." unique_id=103086351]
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="StaticBody2D" unique_id=1131264554]
+[node name="ParallaxLayer" type="ParallaxLayer" parent="ParallaxBackground" unique_id=906256117]
+motion_scale = Vector2(0.05, 0)
+
+[node name="far_background" type="Node2D" parent="ParallaxBackground/ParallaxLayer" unique_id=336979707]
+
+[node name="ColorRect" type="ColorRect" parent="ParallaxBackground/ParallaxLayer/far_background" unique_id=1592407919]
+offset_left = -72.0
+offset_top = -65.0
+offset_right = 290.0
+offset_bottom = 169.0
+color = Color(0.6872149, 0.68721503, 0.6872149, 1)
+
+[node name="mid_background" type="Node2D" parent="ParallaxBackground/ParallaxLayer" unique_id=1282647516]
+
+[node name="ColorRect2" type="ColorRect" parent="ParallaxBackground/ParallaxLayer/mid_background" unique_id=176903323]
+offset_left = 67.0
+offset_top = -24.0
+offset_right = 163.0
+offset_bottom = 104.0
+color = Color(0.4351923, 0.43519226, 0.43519226, 1)
+
+[node name="front_background" type="Node2D" parent="ParallaxBackground/ParallaxLayer" unique_id=485365368]
+
+[node name="ColorRect3" type="ColorRect" parent="ParallaxBackground/ParallaxLayer/front_background" unique_id=1599387771]
+offset_left = 72.0
+offset_top = -19.0
+offset_right = 159.0
+offset_bottom = 100.0
+color = Color(0.15574738, 0.1557474, 0.15574738, 1)
+
+[node name="Midground" type="Node2D" parent="." unique_id=1215590172]
+
+[node name="StaticBody2D" type="StaticBody2D" parent="Midground" unique_id=1597371284]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Midground/StaticBody2D" unique_id=1131264554]
 position = Vector2(100.5, 123.5)
 shape = SubResource("RectangleShape2D_0xm2m")
 
-[node name="ColorRect" type="ColorRect" parent="StaticBody2D" unique_id=1569432980]
+[node name="ColorRect" type="ColorRect" parent="Midground/StaticBody2D" unique_id=1569432980]
 offset_left = -48.0
 offset_top = 104.0
 offset_right = 248.0
 offset_bottom = 144.0
+metadata/_edit_use_anchors_ = true
 
-[node name="Player" parent="." unique_id=1586232719 instance=ExtResource("1_ig7tw")]
+[node name="Player" parent="Midground" unique_id=1586232719 instance=ExtResource("1_ig7tw")]
+
+[node name="Foreground" type="Node2D" parent="." unique_id=1872572403]
+z_index = 10
+
+[node name="ColorRect" type="ColorRect" parent="Foreground" unique_id=1602456000]
+offset_left = -42.0
+offset_top = -45.0
+offset_right = -2.0
+offset_bottom = 166.0
+color = Color(0, 0, 0, 1)

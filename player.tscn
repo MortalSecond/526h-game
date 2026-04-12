@@ -16,3 +16,5 @@ shape = SubResource("RectangleShape2D_onrkg")
 offset_right = 40.0
 offset_bottom = 40.0
 color = Color(0.74509805, 1, 0.2, 1)
+
+[node name="Camera2D" type="Camera2D" parent="." unique_id=426117132]

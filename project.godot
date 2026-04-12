@@ -15,6 +15,10 @@ run/main_scene="uid://dh6adpdimsmtx"
 config/features=PackedStringArray("4.6", "GL Compatibility")
 config/icon="res://icon.svg"
 
+[autoload]
+
+GameState="*uid://badh8j38nok16"
+
 [dotnet]
 
 project/assembly_name="526H"
