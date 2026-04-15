@@ -14,8 +14,8 @@ extends Node2D
 @export var room_center_x: float = 640.0
 
 # This multiplier controls how much each the layers drifts.
-@export var bg_parallax_strength: float = 0.05
-@export var fg_parallax_strength: float = 0.12
+@export var bg_parallax_strength: float = 0.3
+@export var fg_parallax_strength: float = 3
 
 func _process(_delta):
 	# If the player node doesn't exist yet (e.g. during editor preview),

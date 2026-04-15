@@ -2,6 +2,10 @@
 
 [ext_resource type="Script" uid="uid://b2t1nyheaierc" path="res://background_parallax.gd" id="1_0xm2m"]
 [ext_resource type="PackedScene" uid="uid://bhiexaw0mtji4" path="res://player.tscn" id="1_ig7tw"]
+[ext_resource type="Texture2D" uid="uid://d12bko4xm4qgn" path="res://assets/sprites/backgrounds/alone/aloneBackground.png" id="2_7mycd"]
+[ext_resource type="Texture2D" uid="uid://dxpv4mo836gk5" path="res://assets/sprites/objects/cabinet/cabinet.png" id="3_272bh"]
+[ext_resource type="Texture2D" uid="uid://bw3dniwgqkxxs" path="res://assets/sprites/objects/cabinet/cabinetDoor.png" id="4_5vw27"]
+[ext_resource type="Texture2D" uid="uid://b5oc7la1qrvqu" path="res://assets/sprites/foreground/alone/aloneForeground.png" id="6_kek77"]
 
 [node name="Node2D" type="Node2D" unique_id=921852018]
 script = ExtResource("1_0xm2m")
@@ -10,54 +14,32 @@ script = ExtResource("1_0xm2m")
 
 [node name="far_background" type="Node2D" parent="Background" unique_id=336979707]
 
-[node name="ColorRect" type="ColorRect" parent="Background/far_background" unique_id=1592407919]
-offset_left = -72.0
-offset_top = -65.0
-offset_right = 290.0
-offset_bottom = 169.0
-color = Color(0.6872149, 0.68721503, 0.6872149, 1)
-metadata/_edit_use_anchors_ = true
+[node name="Sprite2D" type="Sprite2D" parent="Background/far_background" unique_id=418313667]
+texture = ExtResource("2_7mycd")
+metadata/_edit_group_ = true
 
 [node name="mid_background" type="Node2D" parent="Background" unique_id=1282647516]
+position = Vector2(-83, 131)
 
-[node name="ColorRect2" type="ColorRect" parent="Background/mid_background" unique_id=176903323]
-offset_left = 67.0
-offset_top = -24.0
-offset_right = 163.0
-offset_bottom = 104.0
-color = Color(0.4351923, 0.43519226, 0.43519226, 1)
-metadata/_edit_use_anchors_ = true
+[node name="Sprite2D" type="Sprite2D" parent="Background/mid_background" unique_id=579751858]
+texture = ExtResource("3_272bh")
 
 [node name="front_background" type="Node2D" parent="Background" unique_id=485365368]
+position = Vector2(-83, 131)
 
-[node name="ColorRect3" type="ColorRect" parent="Background/front_background" unique_id=1599387771]
-offset_left = 72.0
-offset_top = -19.0
-offset_right = 159.0
-offset_bottom = 100.0
-color = Color(0.15574738, 0.1557474, 0.15574738, 1)
+[node name="Sprite2D" type="Sprite2D" parent="Background/front_background" unique_id=559888387]
+position = Vector2(-23, 2)
+texture = ExtResource("4_5vw27")
 
 [node name="Midground" type="Node2D" parent="." unique_id=1215590172]
 z_index = 5
 
-[node name="StaticBody2D" type="StaticBody2D" parent="Midground" unique_id=1597371284]
-
-[node name="ColorRect" type="ColorRect" parent="Midground/StaticBody2D" unique_id=1569432980]
-offset_left = -48.0
-offset_top = 104.0
-offset_right = 248.0
-offset_bottom = 144.0
-metadata/_edit_use_anchors_ = true
-
 [node name="Player" parent="Midground" unique_id=1586232719 instance=ExtResource("1_ig7tw")]
-position = Vector2(-3, 65)
+position = Vector2(-497, 55)
 
 [node name="Foreground" type="Node2D" parent="." unique_id=1872572403]
 z_index = 10
 
-[node name="ColorRect" type="ColorRect" parent="Foreground" unique_id=1602456000]
-offset_left = -42.0
-offset_top = -45.0
-offset_right = -2.0
-offset_bottom = 166.0
-color = Color(0, 0, 0, 1)
+[node name="Sprite2D" type="Sprite2D" parent="Foreground" unique_id=929972721]
+position = Vector2(-352, 217)
+texture = ExtResource("6_kek77")
