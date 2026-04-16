@@ -1,0 +1,47 @@
+[
+  {
+    "id": "right_hand",
+    "label": "Right Hand",
+    "accepts_sizes": ["SIZE_SMALL", "SIZE_MEDIUM", "SIZE_LARGE"],
+    "accepts_flags": [],
+    "rejects_flags": [],
+    "capacity": 1,
+    "unlocked_by_default": true
+  },
+  {
+    "id": "left_hand",
+    "label": "Left Hand",
+    "accepts_sizes": ["SIZE_SMALL", "SIZE_MEDIUM", "SIZE_LARGE"],
+    "accepts_flags": [],
+    "rejects_flags": [],
+    "capacity": 1,
+    "unlocked_by_default": true
+  },
+  {
+    "id": "mouth",
+    "label": "Mouth",
+    "accepts_sizes": ["SIZE_SMALL"],
+    "accepts_flags": [],
+    "rejects_flags": ["WET", "SHARP"],
+    "capacity": 1,
+    "unlocked_by_default": true
+  },
+  {
+    "id": "left_leg_pocket",
+    "label": "Left Leg Pocket",
+    "accepts_sizes": ["SIZE_SMALL"],
+    "accepts_flags": ["POWDER", "DUST"],
+    "rejects_flags": ["SIZE_MEDIUM", "SIZE_LARGE"],
+    "capacity": 2,
+    "unlocked_by_default": true
+  },
+  {
+    "id": "belt_carabiner_1",
+    "label": "Carabiner #1",
+    "accepts_sizes": ["SIZE_SMALL", "SIZE_MEDIUM"],
+    "accepts_flags": ["DANGLING"],
+    "rejects_flags": ["SIZE_LARGE"],
+    "capacity": 1,
+    "unlocked_by_default": false
+  }
+]
