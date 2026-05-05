@@ -2,11 +2,12 @@
 
 [ext_resource type="Script" uid="uid://b2t1nyheaierc" path="res://background_parallax.gd" id="1_0xm2m"]
 [ext_resource type="PackedScene" uid="uid://bhiexaw0mtji4" path="res://player.tscn" id="1_ig7tw"]
-[ext_resource type="Texture2D" uid="uid://d12bko4xm4qgn" path="res://assets/sprites/backgrounds/alone/aloneBackground.png" id="2_7mycd"]
-[ext_resource type="Texture2D" uid="uid://dxpv4mo836gk5" path="res://assets/sprites/objects/cabinet/cabinet.png" id="3_272bh"]
-[ext_resource type="Texture2D" uid="uid://bw3dniwgqkxxs" path="res://assets/sprites/objects/cabinet/cabinetDoor.png" id="4_5vw27"]
-[ext_resource type="Texture2D" uid="uid://b5oc7la1qrvqu" path="res://assets/sprites/foreground/alone/aloneForeground.png" id="6_kek77"]
+[ext_resource type="Texture2D" uid="uid://d01njrcx8lrcp" path="res://assets/sprites/backgrounds/home/homeBG_spine.png" id="2_7mycd"]
+[ext_resource type="Texture2D" uid="uid://cahhmddvjebbd" path="res://assets/sprites/objects/home/kiosk.png" id="4_kek77"]
+[ext_resource type="Texture2D" uid="uid://c3qkof0c0sy7l" path="res://assets/sprites/objects/home/handlerPhotos.png" id="5_4c57u"]
+[ext_resource type="Texture2D" uid="uid://ccyd7p1esuyeh" path="res://assets/sprites/objects/home/pinboard.png" id="6_efxa6"]
 [ext_resource type="PackedScene" uid="uid://d2s38atjp6pfi" path="res://scenes/ui/inventory_panel.tscn" id="7_272bh"]
+[ext_resource type="AudioStream" uid="uid://vt48nm01wmas" path="res://assets/audio/music/homeBG1.ogg" id="8_5vw27"]
 
 [node name="Node2D" type="Node2D" unique_id=921852018]
 script = ExtResource("1_0xm2m")
@@ -16,33 +17,46 @@ script = ExtResource("1_0xm2m")
 [node name="far_background" type="Node2D" parent="Background" unique_id=336979707]
 
 [node name="Sprite2D" type="Sprite2D" parent="Background/far_background" unique_id=418313667]
+position = Vector2(0, 7)
 texture = ExtResource("2_7mycd")
 metadata/_edit_group_ = true
 
 [node name="mid_background" type="Node2D" parent="Background" unique_id=1282647516]
-position = Vector2(-83, 131)
+position = Vector2(-73, 401)
 
-[node name="Sprite2D" type="Sprite2D" parent="Background/mid_background" unique_id=579751858]
-texture = ExtResource("3_272bh")
+[node name="Kiosk" type="Sprite2D" parent="Background/mid_background" unique_id=1535106969]
+position = Vector2(1426, 0.9999924)
+scale = Vector2(1.2000012, 1.2000012)
+texture = ExtResource("4_kek77")
+
+[node name="Handler Photos" type="Sprite2D" parent="Background/mid_background" unique_id=1627606430]
+position = Vector2(1196, -506)
+texture = ExtResource("5_4c57u")
+
+[node name="Pinboard" type="Sprite2D" parent="Background/mid_background" unique_id=65058320]
+position = Vector2(-940.9999, -355.99997)
+scale = Vector2(0.72, 0.72)
+texture = ExtResource("6_efxa6")
 
 [node name="front_background" type="Node2D" parent="Background" unique_id=485365368]
-position = Vector2(-83, 131)
-
-[node name="Sprite2D" type="Sprite2D" parent="Background/front_background" unique_id=559888387]
-position = Vector2(-23, 2)
-texture = ExtResource("4_5vw27")
+position = Vector2(-73, 401)
 
 [node name="Midground" type="Node2D" parent="." unique_id=1215590172]
 z_index = 5
 
 [node name="Player" parent="Midground" unique_id=1586232719 instance=ExtResource("1_ig7tw")]
-position = Vector2(-497, 55)
+position = Vector2(-1897, 106)
 
 [node name="Foreground" type="Node2D" parent="." unique_id=1872572403]
 z_index = 10
 
 [node name="Sprite2D" type="Sprite2D" parent="Foreground" unique_id=929972721]
 position = Vector2(-352, 217)
-texture = ExtResource("6_kek77")
 
 [node name="InventoryPanel" parent="." unique_id=1929030594 instance=ExtResource("7_272bh")]
+
+[node name="MusicPlayer" type="AudioStreamPlayer" parent="." unique_id=515992196]
+stream = ExtResource("8_5vw27")
+autoplay = true
+bus = &"Music"
+parameters/looping = true
