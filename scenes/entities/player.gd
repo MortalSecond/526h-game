@@ -1,7 +1,7 @@
 extends CharacterBody2D
 
-# Sam's walking speed in pixels per second.
-const SPEED = 150.0
+# Sam's walking speed.
+@export var SPEED = 150.0
 
 func _physics_process(_delta):
 	# Movement input.

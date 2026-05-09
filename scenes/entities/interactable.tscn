@@ -1,6 +1,6 @@
 [gd_scene format=3 uid="uid://cxebl6fp1lb3d"]
 
-[ext_resource type="Script" uid="uid://cjdw6a3bj6skq" path="res://scenes/entities/examinable.gd" id="1_617ef"]
+[ext_resource type="Script" uid="uid://cjdw6a3bj6skq" path="res://scenes/entities/interactable.gd" id="1_617ef"]
 
 [node name="Examinable" type="Area2D" unique_id=740970100]
 script = ExtResource("1_617ef")

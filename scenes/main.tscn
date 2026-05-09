@@ -1,21 +1,21 @@
 [gd_scene format=3 uid="uid://dh6adpdimsmtx"]
 
-[ext_resource type="Script" uid="uid://b2t1nyheaierc" path="res://background_parallax.gd" id="1_0xm2m"]
-[ext_resource type="PackedScene" uid="uid://bhiexaw0mtji4" path="res://player.tscn" id="1_ig7tw"]
-[ext_resource type="Texture2D" uid="uid://d01njrcx8lrcp" path="res://assets/sprites/backgrounds/home/homeBG_spine.png" id="2_7mycd"]
-[ext_resource type="Texture2D" uid="uid://cahhmddvjebbd" path="res://assets/sprites/objects/home/kiosk.png" id="4_kek77"]
-[ext_resource type="Texture2D" uid="uid://c3qkof0c0sy7l" path="res://assets/sprites/objects/home/handlerPhotos.png" id="5_4c57u"]
-[ext_resource type="PackedScene" uid="uid://cxebl6fp1lb3d" path="res://scenes/entities/examinable.tscn" id="5_5vw27"]
-[ext_resource type="Texture2D" uid="uid://ccyd7p1esuyeh" path="res://assets/sprites/objects/home/pinboard.png" id="6_efxa6"]
-[ext_resource type="PackedScene" uid="uid://d2s38atjp6pfi" path="res://scenes/ui/inventory_panel.tscn" id="7_272bh"]
-[ext_resource type="AudioStream" uid="uid://vt48nm01wmas" path="res://assets/audio/music/homeBG1.ogg" id="8_5vw27"]
-[ext_resource type="Script" uid="uid://3rhdrvkwpyjw" path="res://debug_overlay.gd" id="10_4c57u"]
+[ext_resource type="Script" uid="uid://b2t1nyheaierc" path="res://scripts/general/background_parallax.gd" id="1_choun"]
+[ext_resource type="Texture2D" uid="uid://d01njrcx8lrcp" path="res://assets/sprites/backgrounds/home/homeBG_spine.png" id="2_ya4ey"]
+[ext_resource type="Texture2D" uid="uid://cahhmddvjebbd" path="res://assets/sprites/objects/home/kiosk.png" id="3_eb6dy"]
+[ext_resource type="Texture2D" uid="uid://c3qkof0c0sy7l" path="res://assets/sprites/objects/home/handlerPhotos.png" id="4_trceg"]
+[ext_resource type="PackedScene" uid="uid://cxebl6fp1lb3d" path="res://scenes/entities/interactable.tscn" id="5_a8y0u"]
+[ext_resource type="Texture2D" uid="uid://ccyd7p1esuyeh" path="res://assets/sprites/objects/home/pinboard.png" id="6_jkv2x"]
+[ext_resource type="PackedScene" uid="uid://bhiexaw0mtji4" path="res://scenes/entities/player.tscn" id="7_jbj1t"]
+[ext_resource type="PackedScene" uid="uid://d2s38atjp6pfi" path="res://scenes/ui/inventory_panel.tscn" id="8_muem4"]
+[ext_resource type="AudioStream" uid="uid://vt48nm01wmas" path="res://assets/audio/music/homeBG1.ogg" id="9_dp3eg"]
+[ext_resource type="Script" uid="uid://3rhdrvkwpyjw" path="res://scripts/general/debug_overlay.gd" id="10_0ld40"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_kek77"]
 size = Vector2(41.344604, 22.26248)
 
 [node name="Node2D" type="Node2D" unique_id=921852018]
-script = ExtResource("1_0xm2m")
+script = ExtResource("1_choun")
 
 [node name="Background" type="Node2D" parent="." unique_id=106243733]
 
@@ -23,7 +23,7 @@ script = ExtResource("1_0xm2m")
 
 [node name="Sprite2D" type="Sprite2D" parent="Background/far_background" unique_id=418313667]
 position = Vector2(0, 7)
-texture = ExtResource("2_7mycd")
+texture = ExtResource("2_ya4ey")
 metadata/_edit_group_ = true
 
 [node name="mid_background" type="Node2D" parent="Background" unique_id=1282647516]
@@ -32,13 +32,13 @@ position = Vector2(-73, 401)
 [node name="Kiosk" type="Sprite2D" parent="Background/mid_background" unique_id=1535106969]
 position = Vector2(1426, 0.9999924)
 scale = Vector2(1.2000012, 1.2000012)
-texture = ExtResource("4_kek77")
+texture = ExtResource("3_eb6dy")
 
 [node name="Handler Photos" type="Sprite2D" parent="Background/mid_background" unique_id=1627606430]
 position = Vector2(1196, -506)
-texture = ExtResource("5_4c57u")
+texture = ExtResource("4_trceg")
 
-[node name="Examinable" parent="Background/mid_background" unique_id=740970100 instance=ExtResource("5_5vw27")]
+[node name="Examinable" parent="Background/mid_background" unique_id=740970100 instance=ExtResource("5_a8y0u")]
 position = Vector2(-1040, -453)
 examine_text = "A pinboard of children's drawings."
 has_examine = true
@@ -46,7 +46,7 @@ has_pickup = true
 has_mechanism = true
 
 [node name="Sprite2D" parent="Background/mid_background/Examinable" index="0" unique_id=871651461]
-texture = ExtResource("6_efxa6")
+texture = ExtResource("6_jkv2x")
 
 [node name="CollisionShape2D" parent="Background/mid_background/Examinable" index="1" unique_id=545407528]
 position = Vector2(8.5, 141.5)
@@ -58,7 +58,7 @@ position = Vector2(-73, 401)
 [node name="Midground" type="Node2D" parent="." unique_id=1215590172]
 z_index = 5
 
-[node name="Player" parent="Midground" unique_id=1586232719 instance=ExtResource("1_ig7tw")]
+[node name="Player" parent="Midground" unique_id=1586232719 instance=ExtResource("7_jbj1t")]
 position = Vector2(-1897, 106)
 
 [node name="Foreground" type="Node2D" parent="." unique_id=1872572403]
@@ -67,17 +67,17 @@ z_index = 10
 [node name="Sprite2D" type="Sprite2D" parent="Foreground" unique_id=929972721]
 position = Vector2(-352, 217)
 
-[node name="InventoryPanel" parent="." unique_id=1929030594 instance=ExtResource("7_272bh")]
+[node name="InventoryPanel" parent="." unique_id=1929030594 instance=ExtResource("8_muem4")]
 
 [node name="MusicPlayer" type="AudioStreamPlayer" parent="." unique_id=515992196]
-stream = ExtResource("8_5vw27")
+stream = ExtResource("9_dp3eg")
 autoplay = true
 bus = &"Music"
 parameters/looping = true
 
 [node name="DebugOverlay" type="CanvasLayer" parent="." unique_id=605421354]
 layer = 100
-script = ExtResource("10_4c57u")
+script = ExtResource("10_0ld40")
 
 [node name="LayerLabel" type="Label" parent="DebugOverlay" unique_id=1788440493]
 anchors_preset = 3
