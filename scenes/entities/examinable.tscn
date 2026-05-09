@@ -1,0 +1,12 @@
+[gd_scene format=3 uid="uid://cxebl6fp1lb3d"]
+
+[ext_resource type="Script" uid="uid://cjdw6a3bj6skq" path="res://scenes/entities/examinable.gd" id="1_617ef"]
+
+[node name="Examinable" type="Area2D" unique_id=740970100]
+script = ExtResource("1_617ef")
+
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=871651461]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=545407528]
+position = Vector2(9.000023, 142.99998)
+scale = Vector2(24.84, 24.84)

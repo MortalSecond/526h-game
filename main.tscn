@@ -5,9 +5,14 @@
 [ext_resource type="Texture2D" uid="uid://d01njrcx8lrcp" path="res://assets/sprites/backgrounds/home/homeBG_spine.png" id="2_7mycd"]
 [ext_resource type="Texture2D" uid="uid://cahhmddvjebbd" path="res://assets/sprites/objects/home/kiosk.png" id="4_kek77"]
 [ext_resource type="Texture2D" uid="uid://c3qkof0c0sy7l" path="res://assets/sprites/objects/home/handlerPhotos.png" id="5_4c57u"]
+[ext_resource type="PackedScene" uid="uid://cxebl6fp1lb3d" path="res://scenes/entities/examinable.tscn" id="5_5vw27"]
 [ext_resource type="Texture2D" uid="uid://ccyd7p1esuyeh" path="res://assets/sprites/objects/home/pinboard.png" id="6_efxa6"]
 [ext_resource type="PackedScene" uid="uid://d2s38atjp6pfi" path="res://scenes/ui/inventory_panel.tscn" id="7_272bh"]
 [ext_resource type="AudioStream" uid="uid://vt48nm01wmas" path="res://assets/audio/music/homeBG1.ogg" id="8_5vw27"]
+[ext_resource type="Script" uid="uid://3rhdrvkwpyjw" path="res://debug_overlay.gd" id="10_4c57u"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_kek77"]
+size = Vector2(41.344604, 22.26248)
 
 [node name="Node2D" type="Node2D" unique_id=921852018]
 script = ExtResource("1_0xm2m")
@@ -33,10 +38,19 @@ texture = ExtResource("4_kek77")
 position = Vector2(1196, -506)
 texture = ExtResource("5_4c57u")
 
-[node name="Pinboard" type="Sprite2D" parent="Background/mid_background" unique_id=65058320]
-position = Vector2(-940.9999, -355.99997)
-scale = Vector2(0.72, 0.72)
+[node name="Examinable" parent="Background/mid_background" unique_id=740970100 instance=ExtResource("5_5vw27")]
+position = Vector2(-1040, -453)
+examine_text = "A pinboard of children's drawings."
+has_examine = true
+has_pickup = true
+has_mechanism = true
+
+[node name="Sprite2D" parent="Background/mid_background/Examinable" index="0" unique_id=871651461]
 texture = ExtResource("6_efxa6")
+
+[node name="CollisionShape2D" parent="Background/mid_background/Examinable" index="1" unique_id=545407528]
+position = Vector2(8.5, 141.5)
+shape = SubResource("RectangleShape2D_kek77")
 
 [node name="front_background" type="Node2D" parent="Background" unique_id=485365368]
 position = Vector2(-73, 401)
@@ -60,3 +74,22 @@ stream = ExtResource("8_5vw27")
 autoplay = true
 bus = &"Music"
 parameters/looping = true
+
+[node name="DebugOverlay" type="CanvasLayer" parent="." unique_id=605421354]
+layer = 100
+script = ExtResource("10_4c57u")
+
+[node name="LayerLabel" type="Label" parent="DebugOverlay" unique_id=1788440493]
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -40.0
+offset_top = -23.0
+grow_horizontal = 0
+grow_vertical = 0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/font_size = 28
+
+[editable path="Background/mid_background/Examinable"]

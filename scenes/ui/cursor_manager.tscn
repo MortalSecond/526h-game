@@ -1,0 +1,26 @@
+[gd_scene format=3 uid="uid://diau1v888wna0"]
+
+[ext_resource type="Script" uid="uid://cnln0gvupqm6k" path="res://scenes/ui/cursor_manager.gd" id="1_c0wpj"]
+
+[node name="CursorManager" type="CanvasLayer" unique_id=343203666]
+layer = 100
+script = ExtResource("1_c0wpj")
+
+[node name="CursorVisual" type="Control" parent="." unique_id=1715426269]
+visible = false
+layout_mode = 3
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+mouse_filter = 2
+
+[node name="BGRect" type="TextureRect" parent="CursorVisual" unique_id=899985167]
+layout_mode = 0
+mouse_filter = 2
+expand_mode = 1
+
+[node name="IconRect" type="TextureRect" parent="CursorVisual" unique_id=1271789703]
+layout_mode = 0
+pivot_offset = Vector2(40, 40)
+mouse_filter = 2
+stretch_mode = 5

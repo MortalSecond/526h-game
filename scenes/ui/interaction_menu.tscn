@@ -1,0 +1,7 @@
+[gd_scene format=3 uid="uid://ci8nvb3udvelu"]
+
+[ext_resource type="Script" uid="uid://uudchljhywrg" path="res://scenes/ui/interaction_menu.gd" id="1_vt4i5"]
+
+[node name="InteractionMenu" type="CanvasLayer" unique_id=655781204]
+layer = 99
+script = ExtResource("1_vt4i5")

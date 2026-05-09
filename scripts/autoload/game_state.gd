@@ -1,21 +1,33 @@
 extends Node
 
+# LAYER STATE
 # Which layer the cursor is currently "pointing at."
 var cursor_layer = "midground"
+# Emitted whenever the layer changes.
+signal layer_changed(new_layer: String)
 
-func cycle_layer():
+func _input(event: InputEvent) -> void:
+	if event.is_action_pressed("cycle_layer"):
+		cycle_layer()
+
+# Change layer.
+func cycle_layer() -> void:
 	if cursor_layer == "midground":
 		cursor_layer = "background"
-	else:
+
+	elif cursor_layer == "background":
+		cursor_layer = "foreground"
+
+	elif cursor_layer == "foreground":
 		cursor_layer = "midground"
+		
+	layer_changed.emit(cursor_layer)
 
-# Inventory State
-
+# INVENTORY STATE
 # This dictionary maps slot IDs to arrays of item ID strings.
 # An empty array means the slot is empty.
 var inventory: Dictionary = {}
 var unlocked_slots: Array = []
-
 # Signal for whenever any slot's contents change
 signal inventory_changed
 
