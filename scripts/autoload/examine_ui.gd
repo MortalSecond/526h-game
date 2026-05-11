@@ -24,6 +24,14 @@ const STREAM_SPEED: float = 38.0
 var _state: State = State.IDLE
 var _stream_tween: Tween = null
 
+# TIMING VARIABLES
+# As in, the ones who prevent the textbox 
+# from instantly closing and reopening.
+var _reading_lock: float = 0.0
+var _dismiss_cooldown: float = 0.0
+@export var READING_LOCK_DURATION: float = 0.2
+@export var DISMISS_COOLDOWN_DURATION: float = 0.2
+
 # Constructor. Build at startup.
 # Basically, the textbox and text is ALWAYS pre-built,
 # it's just the actual events in-game that make it visible.
@@ -91,6 +99,10 @@ func _build_ui() -> void:
 
 # Display the actual text.
 func show_text(text: String) -> void:
+	# Timing.
+	if _dismiss_cooldown > 0.0:
+		return
+
 	# Textbox.
 	_current_page = 0
 	_container.visible = true
@@ -102,6 +114,10 @@ func show_text(text: String) -> void:
 	_stream_page(0)
 
 func hide_text() -> void:
+	# Timing.
+	_dismiss_cooldown = DISMISS_COOLDOWN_DURATION
+	_reading_lock = 0.0
+	
 	# Textbox.
 	_container.visible = false
 
@@ -137,9 +153,10 @@ func _stream_page(index: int) -> void:
 	_stream_tween.tween_callback(_on_stream_finished.bind(has_more))
 
 # Adds the final "next..." hint at the end.
-func _on_stream_finished(has_more: bool) -> void:
+func _on_stream_finished() -> void:
 	_state = State.READING
-	_hint_label.text = "[Continue...]" if has_more else "[Dismiss]"
+	_reading_lock = READING_LOCK_DURATION
+	_hint_label.text = ""
 
 func _kill_stream() -> void:
 	if _stream_tween and _stream_tween.is_valid():
@@ -166,13 +183,25 @@ func _paginate(text: String) -> Array[String]:
 	return pages
 
 func _process(_delta: float) -> void:
-	if not _container.visible:
+	# Timing.
+	if _reading_lock > 0.0:
+		_reading_lock -= _delta
+	if _dismiss_cooldown > 0.0:
+		_dismiss_cooldown -= _delta
+
+	# Once the reading lock expires, reveal the hint text.
+	if _state == State.READING and _reading_lock <= 0.0 and _hint_label.text.is_empty():
+		var has_more: bool = _current_page < _pages.size() - 1
+		_hint_label.text = "[Continue...]" if has_more else "[Dismiss]"
+
+	if _state == State.IDLE:
 		return
+
+	# Track Sam's position.
 	var player = get_tree().get_first_node_in_group("player")
 	if not player:
 		return
 
-	# Track Sam.
 	var screen_pos: Vector2 = get_viewport().get_canvas_transform() * player.global_position
 	_container.position = Vector2(
 		screen_pos.x - _container.size.x / 2.0,
@@ -193,6 +222,11 @@ func _input(event: InputEvent) -> void:
 	if clicked or interacted:
 		# Consume the event so InteractionSystem doesn't also fire on the same click.
 		get_viewport().set_input_as_handled()
+		
+		# If the reading lock is still active, prevent from advancing.
+		if _reading_lock > 0.0:
+			return
+
 		_advance()
 
 func _advance() -> void:
@@ -201,9 +235,10 @@ func _advance() -> void:
 		State.STREAMING:
 			_kill_stream()
 			_thought_label.visible_characters = -1
-			var has_more: bool = _current_page < _pages.size() - 1
-			_hint_label.text = "[Continue...]" if has_more else "[Dismiss]"
 			_state = State.READING
+			_reading_lock = READING_LOCK_DURATION
+			_hint_label.text = ""
+		# Advance to next page.
 		State.READING:
 			if _current_page < _pages.size() - 1:
 				_current_page += 1

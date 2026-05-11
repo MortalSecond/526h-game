@@ -14,6 +14,9 @@ var _lmb_held: bool = false
 # Whether we've already opened the radial this press.
 var _radial_opened: bool = false
 
+# EXAMINE GUARD
+var _examine_pressed: bool = false
+
 # Tell the cursor system to change the icon.
 func set_hovered(obj: Node) -> void:
 	hovered = obj
@@ -55,13 +58,27 @@ func _input(event: InputEvent) -> void:
 
 	if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT:
 		if event.pressed:
+			# Examine guard.
+			if ExamineUI.is_open():
+				_examine_pressed = true
+				return
+
 			# LMB just pressed. Start tracking hold duration.
+			_examine_pressed = false
 			_lmb_held = true
 			_hold_timer = 0.0
 			_radial_opened = false
 		else:
+			# Examine guard.
+			if _examine_pressed:
+				_examine_pressed = false
+				_lmb_held = false
+				return
+
 			# LMB released.
 			_lmb_held = false
+
+			# Interaction menu.
 			if _radial_opened:
 				# LMB released while radial was open, execute highlighted option.
 				var chosen = InteractionMenu.get_highlighted_interaction()
