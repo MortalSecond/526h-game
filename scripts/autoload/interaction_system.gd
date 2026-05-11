@@ -25,16 +25,11 @@ func clear_hovered() -> void:
 
 func _update_cursor() -> void:
 	if hovered == null:
-		# Default cursor. Placeholder for now.
-		Input.set_default_cursor_shape(Input.CURSOR_ARROW)
 		return
 	# Get the primary interaction to determine which icon to show.
 	var interactions = hovered.get_interactions()
 	if interactions.is_empty():
 		return
-	# TODO: swap to custom cursor texture based on interactions[0]["icon"].
-	# For now, use the system's pointing hand as a visible placeholder.
-	Input.set_default_cursor_shape(Input.CURSOR_POINTING_HAND)
 
 func _process(delta: float) -> void:
 	if _lmb_held and hovered != null:
@@ -55,9 +50,7 @@ func _process(delta: float) -> void:
 func _input(event: InputEvent) -> void:
 	# Dismiss examine text first if it's open.
 	if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT:
-		if ExamineUI.label.visible:
-			if event.pressed:
-				ExamineUI.hide_text()
+		if ExamineUI.is_open():
 			return
 
 	if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT:

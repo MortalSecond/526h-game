@@ -38,17 +38,15 @@ texture = ExtResource("3_eb6dy")
 position = Vector2(1196, -506)
 texture = ExtResource("4_trceg")
 
-[node name="Examinable" parent="Background/mid_background" unique_id=740970100 instance=ExtResource("5_a8y0u")]
-position = Vector2(-1040, -453)
-examine_text = "A pinboard of children's drawings."
+[node name="Pinboard" parent="Background/mid_background" unique_id=740970100 instance=ExtResource("5_a8y0u")]
+position = Vector2(-1039, -453)
+examine_text = "A pinboard full of children's drawings."
 has_examine = true
-has_pickup = true
-has_mechanism = true
 
-[node name="Sprite2D" parent="Background/mid_background/Examinable" index="0" unique_id=871651461]
+[node name="Sprite2D" parent="Background/mid_background/Pinboard" index="0" unique_id=871651461]
 texture = ExtResource("6_jkv2x")
 
-[node name="CollisionShape2D" parent="Background/mid_background/Examinable" index="1" unique_id=545407528]
+[node name="CollisionShape2D" parent="Background/mid_background/Pinboard" index="1" unique_id=545407528]
 position = Vector2(8.5, 141.5)
 shape = SubResource("RectangleShape2D_kek77")
 
@@ -92,4 +90,4 @@ grow_vertical = 0
 theme_override_colors/font_color = Color(0, 0, 0, 1)
 theme_override_font_sizes/font_size = 28
 
-[editable path="Background/mid_background/Examinable"]
+[editable path="Background/mid_background/Pinboard"]
