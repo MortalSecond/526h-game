@@ -149,8 +149,7 @@ func _stream_page(index: int) -> void:
 		_thought_label, "visible_characters",
 		page_text.length(), duration
 	).set_trans(Tween.TRANS_LINEAR)
-	var has_more: bool = index < _pages.size() - 1
-	_stream_tween.tween_callback(_on_stream_finished.bind(has_more))
+	_stream_tween.tween_callback(_on_stream_finished)
 
 # Adds the final "next..." hint at the end.
 func _on_stream_finished() -> void:

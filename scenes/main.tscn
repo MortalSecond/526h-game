@@ -40,7 +40,7 @@ texture = ExtResource("4_trceg")
 
 [node name="Pinboard" parent="Background/mid_background" unique_id=740970100 instance=ExtResource("5_a8y0u")]
 position = Vector2(-1039, -453)
-examine_text = "A pinboard full of children's drawings."
+examine_text = "A pinboard full of children's drawings. Right at the edge of the Rubicon between the outside world and Gardenview proper. No doubt a strategic placement so kids could leave their own grain of sand before they went back home."
 has_examine = true
 
 [node name="Sprite2D" parent="Background/mid_background/Pinboard" index="0" unique_id=871651461]
