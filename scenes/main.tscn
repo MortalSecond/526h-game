@@ -14,6 +14,12 @@
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_kek77"]
 size = Vector2(41.344604, 22.26248)
 
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_ya4ey"]
+size = Vector2(54.347824, 30.813204)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_choun"]
+size = Vector2(38.64734, 16.10306)
+
 [node name="Node2D" type="Node2D" unique_id=921852018]
 script = ExtResource("1_choun")
 
@@ -29,19 +35,11 @@ metadata/_edit_group_ = true
 [node name="mid_background" type="Node2D" parent="Background" unique_id=1282647516]
 position = Vector2(-73, 401)
 
-[node name="Kiosk" type="Sprite2D" parent="Background/mid_background" unique_id=1535106969]
-position = Vector2(1426, 0.9999924)
-scale = Vector2(1.2000012, 1.2000012)
-texture = ExtResource("3_eb6dy")
-
-[node name="Handler Photos" type="Sprite2D" parent="Background/mid_background" unique_id=1627606430]
-position = Vector2(1196, -506)
-texture = ExtResource("4_trceg")
-
 [node name="Pinboard" parent="Background/mid_background" unique_id=740970100 instance=ExtResource("5_a8y0u")]
 position = Vector2(-1039, -453)
-examine_text = "A pinboard full of children's drawings. Right at the edge of the Rubicon between the outside world and Gardenview proper. No doubt a strategic placement so kids could leave their own grain of sand before they went back home."
+id = "home_pinboard"
 has_examine = true
+has_pickup = true
 
 [node name="Sprite2D" parent="Background/mid_background/Pinboard" index="0" unique_id=871651461]
 texture = ExtResource("6_jkv2x")
@@ -49,6 +47,28 @@ texture = ExtResource("6_jkv2x")
 [node name="CollisionShape2D" parent="Background/mid_background/Pinboard" index="1" unique_id=545407528]
 position = Vector2(8.5, 141.5)
 shape = SubResource("RectangleShape2D_kek77")
+
+[node name="Handler Photos" parent="Background/mid_background" unique_id=1956783789 instance=ExtResource("5_a8y0u")]
+position = Vector2(1259, -430)
+id = "home_handler-photos"
+
+[node name="Sprite2D" parent="Background/mid_background/Handler Photos" index="0" unique_id=871651461]
+texture = ExtResource("4_trceg")
+
+[node name="CollisionShape2D" parent="Background/mid_background/Handler Photos" index="1" unique_id=545407528]
+position = Vector2(-4, 14.9999695)
+shape = SubResource("RectangleShape2D_ya4ey")
+
+[node name="Kiosk" parent="Background/mid_background" unique_id=811525274 instance=ExtResource("5_a8y0u")]
+position = Vector2(1516, 25)
+id = "home_kiosk"
+
+[node name="Sprite2D" parent="Background/mid_background/Kiosk" index="0" unique_id=871651461]
+texture = ExtResource("3_eb6dy")
+
+[node name="CollisionShape2D" parent="Background/mid_background/Kiosk" index="1" unique_id=545407528]
+position = Vector2(25.999992, 14)
+shape = SubResource("RectangleShape2D_choun")
 
 [node name="front_background" type="Node2D" parent="Background" unique_id=485365368]
 position = Vector2(-73, 401)
@@ -91,3 +111,5 @@ theme_override_colors/font_color = Color(0, 0, 0, 1)
 theme_override_font_sizes/font_size = 28
 
 [editable path="Background/mid_background/Pinboard"]
+[editable path="Background/mid_background/Handler Photos"]
+[editable path="Background/mid_background/Kiosk"]

@@ -1,70 +1,109 @@
 extends CanvasLayer
 
 # ICON ASSETS
-const ICON_BG = preload("res://assets/icons/InteractionIconBG.png")
-const ICON_BG_PLUS = preload("res://assets/icons/InteractionIconPlusBG.png")
 const ICONS = {
 	"examine": preload("res://assets/icons/examine.png"),
 	"pickup": preload("res://assets/icons/pickup.png"),
 	"mechanism": preload("res://assets/icons/mechanism.png"),
 }
-const CURSOR_EMPTY = preload("res://assets/icons/CursorEmpty.png")
 
-const BG_SIZE        = Vector2(64, 64)
-const ICON_SIZE      = Vector2(40, 40)
-const ICON_OFFSET    = Vector2(12, 12)
-# Subtracting half the circle size from the mouse position
-# so the circle CENTER sits on the mouse, not its top-left corner.
-const HOTSPOT_OFFSET = BG_SIZE / 2.0
+# DOT STYLE VARIABLES
+const DOT_IDLE_SIZE = Vector2(10, 10)
+const DOT_HOVER_SIZE = Vector2(40, 40)
+const HINT_HOVER_SIZE = Vector2(60, 60)
+const TWEEN_DURATION = 0.14
+var _tween: Tween = null
 
 # NODES
-@onready var cursor_visual = $CursorVisual
-@onready var bg_rect = $CursorVisual/BGRect
-@onready var icon_rect = $CursorVisual/IconRect
+@onready var _dot: Panel = $CursorDot
+@onready var _icon: TextureRect = $IconRect
+@onready var _hint: Panel = $MultipleHint
 
-# Hide the computer's mouse pointer thing, 
-# replace it with our own.
 func _ready() -> void:
-	cursor_visual.visible = true
+	# Hide the computer's mouse pointer thing, 
+	# replace it with our own.
 	Input.mouse_mode = Input.MOUSE_MODE_HIDDEN
-	bg_rect.texture = CURSOR_EMPTY
-	icon_rect.visible = false
 
-	# Set all sizes.
-	cursor_visual.size = BG_SIZE
-	bg_rect.size       = BG_SIZE
-	bg_rect.position   = Vector2.ZERO
-	icon_rect.size     = ICON_SIZE
-	icon_rect.position = ICON_OFFSET
+	# Scale the dot cursor.
+	_dot.size = DOT_IDLE_SIZE
+	_hint.size = DOT_IDLE_SIZE
+
+	# Icon and hint starts hidden.
+	_icon.visible = false
+	_hint.visible = false
+
+	# Signal response. In theory, this is the ONLY place where animations are triggered.
+	CursorState.state_changed.connect(_on_state_changed)
 
 # Move the cursor visual to follow the actual mouse position.
 func _process(_delta) -> void:
-	cursor_visual.global_position = get_viewport().get_mouse_position()
+	var mouse_pos = get_viewport().get_mouse_position()
 
-# No interactable is hovered. Hide the composite icon.
-func set_idle() -> void:
-	bg_rect.texture = CURSOR_EMPTY
-	icon_rect.visible = false
+	# Keep the dot's CENTER on the mouse, regardless of size.
+	_dot.global_position = mouse_pos - (_dot.size / 2.0)
+	# Keep the icon centered.
+	_icon.global_position = mouse_pos - (_icon.size / 2.0)
+	# Center the two-circle hint.
+	if _hint:
+		_hint.global_position = mouse_pos - _hint.size / 2.0
 
-# An interactable is hovered. Show the appropriate composite.
-func set_hover(interactions: Array) -> void:
+func _on_state_changed(new_target: CursorState.Target, activity: CursorState.Activity) -> void:
+	match new_target:
+		CursorState.Target.INTERACTABLE:
+			_enter_hover()
+		CursorState.Target.IDLE:
+			_exit_hover()
+		CursorState.Target.MENU:
+			# TODO: Menu cursor.
+			pass
+
+func _enter_hover() -> void:
+	_kill_tween()
+	_icon.visible = false # Hide icon during growing animation.
+
+	_grow_tween(_dot, DOT_HOVER_SIZE)
+	# Once the dot has grown to full size, show the icon inside.
+	_tween.tween_callback(_show_icon)
+	_tween.tween_callback(CursorState.settle)
+
+func _exit_hover() -> void:
+	_kill_tween()
+	_icon.visible = false # Hide icon immediately on exit.
+
+	# Hide the two-circle "hint" if it exists.
+	if _hint.visible:
+		_shrink_tween(_hint, DOT_IDLE_SIZE)
+		_hint.visible = false
+
+	_shrink_tween(_dot, DOT_IDLE_SIZE)
+	_tween.tween_callback(CursorState.settle)
+
+func _show_icon() -> void:
+	var interactions = CursorState.current_interactions
 	if interactions.is_empty():
-		set_idle()
 		return
-	
-	# Choose the correct background based on option count.
-	# Single option = plain circle.
-	# Multiple = circle with plus.
-	if interactions.size() > 1:
-		bg_rect.texture = ICON_BG_PLUS
-	else:
-		bg_rect.texture = ICON_BG
-	
-	# Show the primary (first) interaction's icon on top of the background.
+
+	# Show the default interaction icon.
 	var primary_id = interactions[0]["id"]
 	if ICONS.has(primary_id):
-		icon_rect.texture = ICONS[primary_id]
-		icon_rect.visible = true
-	else:
-		# Unknown icon, hide icon layer.
-		icon_rect.visible = false
+		_icon.texture = ICONS[primary_id]
+		_icon.visible = true
+
+	# If more than one interaction, add a second circle as hint.
+	if interactions.size() > 1:
+		_grow_tween(_hint, HINT_HOVER_SIZE)
+		_hint.visible = true
+
+func _kill_tween() -> void:
+	if _tween and _tween.is_valid():
+		_tween.kill()
+	_tween = null
+
+# Tweens
+func _grow_tween(obj, size):
+	_tween = create_tween()
+	_tween.tween_property(obj, "size", size, TWEEN_DURATION).set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_OUT)
+
+func _shrink_tween(obj, size):
+	_tween = create_tween()
+	_tween.tween_property(obj, "size", size, TWEEN_DURATION).set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_IN)

@@ -3,6 +3,7 @@ extends CanvasLayer
 # MENU VARIABLES
 # How far each option button is from the center of the menu.
 const RADIUS = 70.0
+const BTN_SIZE = Vector2(48, 48)
 # The cords where LMB was held.
 var _origin: Vector2 = Vector2.ZERO
 # The interactable this menu was opened for.
@@ -46,20 +47,34 @@ func _spawn_button(index: int, total: int, interaction: Dictionary) -> void:
 	button.set_meta("interaction", interaction)
 	button.set_meta("index", index)
 	
-	var bg = TextureRect.new()
-	bg.texture = CursorManager.ICON_BG
-	bg.expand_mode = TextureRect.EXPAND_FIT_WIDTH_PROPORTIONAL
-	bg.size = Vector2(56, 56)
+	# Shape the circle BG with a Panel.
+	var circle = Panel.new()
+	circle.size = BTN_SIZE
+	var style = StyleBoxFlat.new()
+	style.bg_color = Color(0, 0, 0, 0)
+	style.border_color = Color(1, 1, 1, 0.9)
+	style.border_width_left = 2
+	style.border_width_right = 2
+	style.border_width_top = 2
+	style.border_width_bottom = 2
+	style.corner_radius_top_left = 999
+	style.corner_radius_top_right = 999
+	style.corner_radius_bottom_left = 999
+	style.corner_radius_bottom_right = 999
+	circle.add_theme_stylebox_override("panel", style)
+	button.add_child(circle)
 	
-	var icon = TextureRect.new()
+	# Icon on top of the circle, centered.
 	var icon_id = interaction.get("id", "")
 	if CursorManager.ICONS.has(icon_id):
+		var icon = TextureRect.new()
 		icon.texture = CursorManager.ICONS[icon_id]
-	icon.expand_mode = TextureRect.EXPAND_FIT_WIDTH_PROPORTIONAL
-	icon.size = Vector2(56, 56)
+		icon.expand_mode = TextureRect.EXPAND_FIT_WIDTH_PROPORTIONAL
+		const ICON_SIZE = Vector2(28, 28)
+		icon.size = ICON_SIZE
+		icon.position = (BTN_SIZE - ICON_SIZE) / 2.0
+		button.add_child(icon)
 	
-	button.add_child(bg)
-	button.add_child(icon)
 	add_child(button)
 	_buttons.append(button)
 

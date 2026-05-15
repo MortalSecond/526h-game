@@ -18,6 +18,7 @@ config/features=PackedStringArray("4.6", "GL Compatibility")
 
 SlotRegistry="*uid://dv8gq68go7njm"
 GameState="*uid://badh8j38nok16"
+CursorState="*uid://ba43eul4cqsrp"
 InteractionSystem="*uid://5y3342clx6iy"
 ExamineUI="*uid://cmpnv8hhg863n"
 CursorManager="*uid://diau1v888wna0"

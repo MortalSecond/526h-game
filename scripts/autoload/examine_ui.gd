@@ -32,12 +32,18 @@ var _dismiss_cooldown: float = 0.0
 @export var READING_LOCK_DURATION: float = 0.2
 @export var DISMISS_COOLDOWN_DURATION: float = 0.2
 
+# EXAMINE TEXT VARIABLES
+var _examinables: Dictionary = {}
+
 # Constructor. Build at startup.
 # Basically, the textbox and text is ALWAYS pre-built,
 # it's just the actual events in-game that make it visible.
 func _ready() -> void:
 	_build_ui()
 	_container.visible = false
+
+	# Load up the examinables.
+	_load_examinables()
 
 func _build_ui() -> void:
 	_container = PanelContainer.new()
@@ -244,3 +250,32 @@ func _advance() -> void:
 				_stream_page(_current_page)
 			else:
 				hide_text()
+
+# !!!TODO: CHANGE THIS INTO FLOOR-SPECIFIC SCENE SCRIPTS!!!
+# Basically, each one will be stored in assets/data/[floor]/examinables.json,
+# then be deserialized between floors. Having every examinable preloaded in the 
+# examine script is not only fragile, but would needlessly have a bunch of
+# entries that aren't accessible in the floor yet, hogging up the RAM.
+# However, due to the fact i'm super early in development, it'll go here. At least,
+# until i actually create specific Home.tscn and Home.gd files.
+func _load_examinables() -> void:
+	var file = FileAccess.open("res://assets/data/examinables.json/", FileAccess.READ)
+
+	# Error handling for safety's sake
+	if not file:
+		push_error("SlotRegistry: Could not open slots.json")
+		return
+
+	# Deserialize JSON
+	var parsed = JSON.parse_string(file.get_as_text())
+	file.close()
+	for examinable_def in parsed:
+		_examinables[examinable_def["id"]] = examinable_def
+
+func _get_examinable_text() -> String:
+	var combined_string = ""
+
+	for examinable in _examinables:
+		combined_string += examinable["text"]
+
+	return combined_string

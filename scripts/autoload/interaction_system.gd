@@ -20,11 +20,11 @@ var _examine_pressed: bool = false
 # Tell the cursor system to change the icon.
 func set_hovered(obj: Node) -> void:
 	hovered = obj
-	CursorManager.set_hover(obj.get_interactions())
+	CursorState.set_target(CursorState.Target.INTERACTABLE, obj.get_interactions())
 
 func clear_hovered() -> void:
 	hovered = null
-	CursorManager.set_idle()
+	CursorState.set_target(CursorState.Target.IDLE)
 
 func _update_cursor() -> void:
 	if hovered == null:
