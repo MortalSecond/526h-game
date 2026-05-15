@@ -36,7 +36,7 @@ func get_highlighted_interaction() -> Dictionary:
 func _spawn_button(index: int, total: int, interaction: Dictionary) -> void:
 	# Calculate this button's angle around the circle.
 	# Starting at the top (-PI/2) and going clockwise.
-	var angle = -PI / 2.0 + index * (TAU / total)
+	var angle = -PI / 1.0 + index * (TAU / total)
 	var btn_offset = Vector2(cos(angle), sin(angle)) * RADIUS
 	
 	# Each button is a Control containing the same BG+icon composite
@@ -57,10 +57,6 @@ func _spawn_button(index: int, total: int, interaction: Dictionary) -> void:
 	style.border_width_right = 2
 	style.border_width_top = 2
 	style.border_width_bottom = 2
-	style.corner_radius_top_left = 999
-	style.corner_radius_top_right = 999
-	style.corner_radius_bottom_left = 999
-	style.corner_radius_bottom_right = 999
 	circle.add_theme_stylebox_override("panel", style)
 	button.add_child(circle)
 	
@@ -114,3 +110,6 @@ func _clear_buttons() -> void:
 	for btn in _buttons:
 		btn.queue_free()
 	_buttons.clear()
+
+func is_open() -> bool:
+	return not _buttons.is_empty()

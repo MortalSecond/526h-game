@@ -2,6 +2,26 @@
 
 [ext_resource type="Script" uid="uid://uudchljhywrg" path="res://scenes/ui/interaction_menu.gd" id="1_vt4i5"]
 
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_cwmww"]
+bg_color = Color(0, 0, 0, 0.3254902)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(10.02, 10.02, 10.02, 1)
+
 [node name="InteractionMenu" type="CanvasLayer" unique_id=655781204]
 layer = 99
 script = ExtResource("1_vt4i5")
+
+[node name="ButtonControl" type="Control" parent="." unique_id=750735549]
+layout_mode = 3
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="CirclePanel" type="Panel" parent="ButtonControl" unique_id=1181330535]
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 40.0
+theme_override_styles/panel = SubResource("StyleBoxFlat_cwmww")

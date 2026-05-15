@@ -13,6 +13,7 @@ var _lmb_held: bool = false
 # MENU VARIABLES
 # Whether we've already opened the radial this press.
 var _radial_opened: bool = false
+var _menu_target: Node = null
 
 # EXAMINE GUARD
 var _examine_pressed: bool = false
@@ -24,6 +25,8 @@ func set_hovered(obj: Node) -> void:
 
 func clear_hovered() -> void:
 	hovered = null
+	if InteractionMenu.is_open():
+		return
 	CursorState.set_target(CursorState.Target.IDLE)
 
 func _update_cursor() -> void:
@@ -41,6 +44,7 @@ func _process(delta: float) -> void:
 		# open the radial menu if this object has multiple options.
 		if _hold_timer >= HOLD_THRESHOLD and not _radial_opened:
 			_radial_opened = true
+			_menu_target = hovered
 			var interactions = hovered.get_interactions()
 			if interactions.size() > 1:
 				# Open interaction menu.
@@ -82,11 +86,13 @@ func _input(event: InputEvent) -> void:
 			if _radial_opened:
 				# LMB released while radial was open, execute highlighted option.
 				var chosen = InteractionMenu.get_highlighted_interaction()
-				if not chosen.is_empty() and hovered != null:
-					hovered.execute_interaction(chosen["id"])
+				if not chosen.is_empty() and _menu_target != null:
+					_menu_target.execute_interaction(chosen["id"])
 				InteractionMenu.close()
+				_menu_target = null
+				
+			# Fast click, execute default action directly.
 			elif hovered != null and _hold_timer < HOLD_THRESHOLD:
-				# Fast click, execute default action directly.
 				var interactions = hovered.get_interactions()
 				if not interactions.is_empty():
 					hovered.execute_interaction(interactions[0]["id"])
