@@ -1,0 +1,26 @@
+[
+	{
+		"id": "home_pinboard",
+		"text":[
+            "A pinboard full of children's drawings, right at the Rubicon between the outside world and Gardenview proper. No doubt a strategic placement so kids could leave their own grain of sand before they went back home."
+		]
+	},
+	{
+		"id": "home_kiosk",
+		"text":[
+			"The information kiosk.",
+			"There's a couple maps of the lower levels here, but none of them are nearly descriptive enough to use as any serious exploration aid.",
+			"They seem to have been made mainly to railroad children and their parents into specific entertainments.",
+            "Some of the room descriptions are straight up lies."
+		]
+	},
+	{
+		"id": "home_handler-photos",
+		"text":[
+			"A series of portraits, framing the loyal Toon Handlers.",
+			"Too bad Side Characters didn't get their own handlers, I would've loved to have had a paramedic mentor.",
+			"Or a Wilderness First Responder... Or a Safety Inspector!",
+            "Ah..."
+		]
+	}
+]

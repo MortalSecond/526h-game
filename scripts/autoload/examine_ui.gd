@@ -32,7 +32,7 @@ var _dismiss_cooldown: float = 0.0
 @export var READING_LOCK_DURATION: float = 0.2
 @export var DISMISS_COOLDOWN_DURATION: float = 0.2
 
-# EXAMINE TEXT VARIABLES
+# EXAMINE DATA
 var _examinables: Dictionary = {}
 
 # Constructor. Build at startup.
@@ -43,6 +43,8 @@ func _ready() -> void:
 	_container.visible = false
 
 	# Load up the examinables.
+	# TODO: Again, in theory this should be _load_examinables(FLOOR),
+	# but right now i'm only doing it this way to have a start.
 	_load_examinables()
 
 func _build_ui() -> void:
@@ -64,9 +66,9 @@ func _build_ui() -> void:
 	_container.add_theme_stylebox_override("panel", style)
 	
 	var margin = MarginContainer.new()
-	margin.add_theme_constant_override("margin_left",   int(PADDING))
-	margin.add_theme_constant_override("margin_right",  int(PADDING))
-	margin.add_theme_constant_override("margin_top",    int(PADDING))
+	margin.add_theme_constant_override("margin_left", int(PADDING))
+	margin.add_theme_constant_override("margin_right", int(PADDING))
+	margin.add_theme_constant_override("margin_top", int(PADDING))
 	margin.add_theme_constant_override("margin_bottom", int(PADDING))
 	
 	var vbox = VBoxContainer.new()
@@ -103,18 +105,29 @@ func _build_ui() -> void:
 	_container.add_child(margin)
 	add_child(_container)
 
+# Looks up ID's pages and displays them.
+func show_for_id(id: String) -> void:
+	if not _examinables.has(id):
+		push_error("ExamineUI: no examinable entry found for id: " + id)
+		return
+	show_text(_examinables[id])
+
 # Display the actual text.
-func show_text(text: String) -> void:
+func show_text(texts: Array) -> void:
 	# Timing.
 	if _dismiss_cooldown > 0.0:
 		return
+	if texts.is_empty():
+		return
+
+	# Pagination
+	_pages.clear()
+	for t in texts:
+		_pages.append(str(t))
 
 	# Textbox.
 	_current_page = 0
 	_container.visible = true
-
-	# Pagination.
-	_pages = _paginate(text)
 
 	# Streaming
 	_stream_page(0)
@@ -142,6 +155,7 @@ func is_open() -> bool:
 func _stream_page(index: int) -> void:
 	_state = State.STREAMING
 	var page_text = _pages[index]
+
 	# Set full text first then hide all characters before
 	# the tween begins revealing them.
 	_thought_label.text = page_text
@@ -149,6 +163,7 @@ func _stream_page(index: int) -> void:
 	_hint_label.text = ""
 	_kill_stream()
 
+	# Tween the reveal.
 	var duration: float = float(page_text.length()) / STREAM_SPEED
 	_stream_tween = create_tween()
 	_stream_tween.tween_property(
@@ -168,24 +183,22 @@ func _kill_stream() -> void:
 		_stream_tween.kill()
 	_stream_tween = null
 
-# Pagination. This will split text into different
-# clicks on the textbox.
-func _paginate(text: String) -> Array[String]:
-	var pages: Array[String] = []
-	var words = text.split(" ")
-	var current := ""
-	for word in words:
-		var candidate = current + ("" if current.is_empty() else " ") + word
-		if candidate.length() > CHARS_PER_PAGE and not current.is_empty():
-			pages.append(current.strip_edges())
-			current = word
-		else:
-			current = candidate
-	if not current.is_empty():
-		pages.append(current.strip_edges())
-	if pages.is_empty():
-		pages.append("")
-	return pages
+func _advance() -> void:
+	match _state:
+		# Skip to full reveal without advancing pages yet.
+		State.STREAMING:
+			_kill_stream()
+			_thought_label.visible_characters = -1
+			_state = State.READING
+			_reading_lock = READING_LOCK_DURATION
+			_hint_label.text = ""
+		# Advance to next page.
+		State.READING:
+			if _current_page < _pages.size() - 1:
+				_current_page += 1
+				_stream_page(_current_page)
+			else:
+				hide_text()
 
 func _process(_delta: float) -> void:
 	# Timing.
@@ -206,7 +219,6 @@ func _process(_delta: float) -> void:
 	var player = get_tree().get_first_node_in_group("player")
 	if not player:
 		return
-
 	var screen_pos: Vector2 = get_viewport().get_canvas_transform() * player.global_position
 	_container.position = Vector2(
 		screen_pos.x - _container.size.x / 2.0,
@@ -222,6 +234,9 @@ func _input(event: InputEvent) -> void:
 		and event.button_index == MOUSE_BUTTON_LEFT \
 		and event.pressed
 
+	# TODO: This is actually a vestigial keypress check, from
+	# back when examination was proximity based rather than LMB,
+	# but i'll keep it in case i ever need it later.
 	var interacted = event.is_action_pressed("ui_interact")
 
 	if clicked or interacted:
@@ -234,23 +249,6 @@ func _input(event: InputEvent) -> void:
 
 		_advance()
 
-func _advance() -> void:
-	match _state:
-		# Skip to full reveal without advancing pages yet.
-		State.STREAMING:
-			_kill_stream()
-			_thought_label.visible_characters = -1
-			_state = State.READING
-			_reading_lock = READING_LOCK_DURATION
-			_hint_label.text = ""
-		# Advance to next page.
-		State.READING:
-			if _current_page < _pages.size() - 1:
-				_current_page += 1
-				_stream_page(_current_page)
-			else:
-				hide_text()
-
 # !!!TODO: CHANGE THIS INTO FLOOR-SPECIFIC SCENE SCRIPTS!!!
 # Basically, each one will be stored in assets/data/[floor]/examinables.json,
 # then be deserialized between floors. Having every examinable preloaded in the 
@@ -258,8 +256,8 @@ func _advance() -> void:
 # entries that aren't accessible in the floor yet, hogging up the RAM.
 # However, due to the fact i'm super early in development, it'll go here. At least,
 # until i actually create specific Home.tscn and Home.gd files.
-func _load_examinables() -> void:
-	var file = FileAccess.open("res://assets/data/examinables.json/", FileAccess.READ)
+func _load_file(path: String) -> void:
+	var file = FileAccess.open(path, FileAccess.READ)
 
 	# Error handling for safety's sake
 	if not file:
@@ -269,13 +267,23 @@ func _load_examinables() -> void:
 	# Deserialize JSON
 	var parsed = JSON.parse_string(file.get_as_text())
 	file.close()
-	for examinable_def in parsed:
-		_examinables[examinable_def["id"]] = examinable_def
+	# Error handling.
+	if not parsed is Array:
+		push_error("ExamineUI: " + path + " root must be an Array.")
+		return
+	for entry in parsed:
+		if not entry.has("id") or not entry.has("text"):
+			push_error("ExamineUI: missing 'id' or 'text' field in " + path)
+			continue
+		if not entry["text"] is Array:
+			push_error("ExamineUI: 'text' field must be an Array in entry " + str(entry.get("id", "?")))
+			continue
 
-func _get_examinable_text() -> String:
-	var combined_string = ""
+		_examinables[entry["id"]] = entry["text"]
 
-	for examinable in _examinables:
-		combined_string += examinable["text"]
+func _load_examinables() -> void:
+	_load_file("res://assets/data/home/examinables.json")
 
-	return combined_string
+func load_floor(path: String) -> void:
+	_examinables.clear()
+	_load_file(path)

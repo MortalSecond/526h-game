@@ -6,8 +6,6 @@ extends Area2D
 @export var has_pickup = false
 @export var has_mechanism = false
 
-var examine_text: String = ExamineUI._get_examinable_text()
-
 # Track whether the mouse is physically over this object.
 var _mouse_is_over: bool = false
 
@@ -58,4 +56,4 @@ func get_interactions() -> Array:
 	
 func execute_interaction(interaction: String) -> void:
 	if interaction == "examine":
-		ExamineUI.show_text(examine_text)
+		ExamineUI.show_for_id(id)

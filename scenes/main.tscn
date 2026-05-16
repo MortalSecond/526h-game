@@ -51,6 +51,7 @@ shape = SubResource("RectangleShape2D_kek77")
 [node name="Handler Photos" parent="Background/mid_background" unique_id=1956783789 instance=ExtResource("5_a8y0u")]
 position = Vector2(1259, -430)
 id = "home_handler-photos"
+has_examine = true
 
 [node name="Sprite2D" parent="Background/mid_background/Handler Photos" index="0" unique_id=871651461]
 texture = ExtResource("4_trceg")
@@ -62,6 +63,7 @@ shape = SubResource("RectangleShape2D_ya4ey")
 [node name="Kiosk" parent="Background/mid_background" unique_id=811525274 instance=ExtResource("5_a8y0u")]
 position = Vector2(1516, 25)
 id = "home_kiosk"
+has_examine = true
 
 [node name="Sprite2D" parent="Background/mid_background/Kiosk" index="0" unique_id=871651461]
 texture = ExtResource("3_eb6dy")
