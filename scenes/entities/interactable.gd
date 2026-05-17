@@ -1,7 +1,7 @@
 extends Area2D
 
 @export var id: String = ""
-@export var layer: String = "background"
+@export_enum("background", "midground", "foreground") var layer: String = "background"
 @export var has_examine = false
 @export var has_pickup = false
 @export var has_mechanism = false
